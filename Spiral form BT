@@ -1,0 +1,71 @@
+using System;
+using System.Collections.Generic;
+
+public class Tree
+{
+  public Node root;
+  public Node pred;
+  
+  public class Node{
+      public int data;
+      public Node left,right;
+      public Node(int d)
+      {
+        data =d;
+        left = right = null;
+      }
+  }
+  public void printSpiral(Node n)
+  {
+      if(n == null)
+      return;
+    Stack<Node> s1 = new Stack<Node>();
+    Stack<Node> s2 = new Stack<Node>();
+    s1.Push(n);
+    while(s1.Count > 0 || s2.Count > 0)
+    {
+        while(s1.Count > 0)
+        {
+          Node curr = s1.Pop();
+          Console.Write(curr.data + " ");
+          if(curr.right != null)
+          {
+            s2.Push(curr.right);
+          }
+          if(curr.left != null)
+          {
+            s2.Push(curr.left);
+          }
+        }
+        
+        while(s2.Count > 0)
+        {
+           Node curr1 = s2.Pop();
+           Console.Write(curr1.data + " ");
+            if(curr1.left != null)
+          {
+            s1.Push(curr1.left);
+          }
+          if(curr1.right != null)
+          {
+            s1.Push(curr1.right);
+          }
+        }
+    }
+    
+  }
+  public static void Main()
+  {
+    Tree g = new Tree();
+    g.root = new Node(1);
+    g.root.left = new Node(2);
+    g.root.right = new Node(3);
+    g.root.left.left = new Node(4);
+     g.root.left.left.left = new Node(8);
+    g.root.left.right = new Node(5);
+    g.root.right.left = new Node(6);
+    g.root.right.right = new Node(7);
+    
+    g.printSpiral(g.root);
+  }
+}
