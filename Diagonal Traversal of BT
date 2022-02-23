@@ -1,0 +1,81 @@
+using System;
+using System.Collections.Generic;
+
+public class Tree{
+	
+	public Node root;
+	public class Node
+	{
+		public int data;
+		public Node left,right;
+		public Node(int d)
+		{
+			data =d;
+			left = right = null;
+		}
+	}
+	
+	public void printDiaognal()
+	{
+		Queue<Tuple<int,Node>> q = new Queue<Tuple<int,Node>>();
+		Dictionary<int, List<int>> d1 = new Dictionary<int, List<int>>();
+		q.Enqueue(new Tuple<int,Node>(0, root));
+		Tuple<int,Node> t;
+		while(q.Count > 0 )
+		{
+			t = q.Dequeue();
+			Node curr = t.Item2;
+			int dist = t.Item1;
+			updateDictionary(d1,dist,curr);
+			
+			if(curr.left != null)
+			{
+				q.Enqueue(new Tuple<int, Node>(dist + 1, curr.left));
+			}
+			if(curr.right != null)
+			{
+				q.Enqueue(new Tuple<int, Node>( dist, curr.right));
+			}
+		}
+		
+		foreach(KeyValuePair<int,List<int>> elem in d1)
+		{
+			Console.Write(elem.Key + "-->");
+			foreach(int item in elem.Value)
+			{
+				Console.Write(item + " ");
+			}
+			Console.WriteLine();
+		}
+	}
+	
+	public void updateDictionary(Dictionary<int, List<int>> d1, int dist, Node curr)
+	{
+		if(d1.ContainsKey(dist))
+			{
+				d1[dist].Add(curr.data);
+			}
+			else
+			{
+				d1.Add(dist, new List<int>() {curr.data });
+			}
+	}
+	
+	public static void Main()
+	{
+		Tree g = new Tree();
+		g.root = new Node(8);
+		g.root.left = new Node(3);
+		g.root.right = new Node(10);
+		g.root.right.right = new Node(14);
+		g.root.right.right.left = new Node(13);
+		g.root.left.left = new Node(1);
+		g.root.right.left = new Node(6);
+		g.root.right.left.right  = new Node(7);
+		g.root.right.left.left = new Node(4);
+		
+		
+		//g.print();
+		g.printDiaognal();
+	}
+}
