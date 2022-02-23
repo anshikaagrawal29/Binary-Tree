@@ -1,0 +1,91 @@
+using System;
+
+public class Tree
+{
+  public Node root;
+  public Node pred;
+  
+  public class Node{
+      public int data;
+      public Node left,right;
+      public Node(int d)
+      {
+        data =d;
+        left = right = null;
+      }
+  }
+  
+  public void BoundaryTraversal(Node n)
+  {
+	  if(n == null)
+		  return;
+    //print root
+	  Console.Write(n.data + " ");
+    
+    printLeft(n.left);
+    printInorder(n);
+    printRight(n.right);
+  }
+  
+  public void printRight(Node n)
+  {
+      if(n == null)
+       return;
+      
+      if(n.right != null)
+      {
+        printRight(n.right);
+        Console.Write(n.data + " ");
+      }
+      else if(n.left != null)
+      {
+        printRight(n.left);
+        Console.Write(n.data + " ");
+      }
+  }
+  
+  public void printLeft(Node n)
+  {
+      if(n == null)
+        return;
+        
+      if(n.left != null)
+      {
+        Console.Write(n.data + " ");
+        printLeft(n.left);
+      }
+      else if(n.right != null)
+      {
+        Console.Write(n.data + " ");
+        printLeft(n.right);
+      }
+      
+  }
+  
+  public void printInorder(Node n)
+  {
+    if(n == null)
+      return;
+     
+     printInorder(n.left);
+     if(n.left == null && n.right == null)
+     Console.Write(n.data + " ");
+     printInorder(n.right);
+  }
+  
+  public static void Main()
+  {
+    Tree g = new Tree();
+    g.root = new Node(8);
+    g.root.left = new Node(10);
+    g.root.right = new Node(2);
+    g.root.left.left = new Node(3);
+    g.root.left.left.left = new Node(29);
+    g.root.left.right = new Node(5);
+    g.root.left.right.right = new Node(15);
+    g.root.right.left = new Node(18);
+    g.root.right.right = new Node(7);
+    g.root.right.right.right = new Node(6);
+    g.BoundaryTraversal(g.root);
+  }
+}
