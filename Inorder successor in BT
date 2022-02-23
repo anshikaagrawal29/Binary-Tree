@@ -1,0 +1,48 @@
+using System;
+using System.Collections.Generic;
+
+public class Tree{
+	
+	public Node root;
+	public class Node
+	{
+		public int data;
+		public Node left,right;
+		public Node(int d)
+		{
+			data =d;
+			left = right = null;
+		}
+	}
+	
+	Node next= null;
+	public void successor(Node n)
+	{
+		if(n == null)
+			return;
+		successor(n.right);
+		Console.Write("Inorder successor of " + n.data + " is:");
+		if(next == null)
+			Console.Write("-");
+		else
+			Console.Write(next.data + " ");
+		Console.WriteLine();
+		next = n;
+		successor(n.left);
+		
+	}
+	
+	public static void Main()
+	{
+		Tree g = new Tree();
+		g.root = new Node(8);
+		g.root.left = new Node(10);
+		g.root.right = new Node(2);
+		g.root.left.left = new Node(3);
+		g.root.left.right = new Node(5);
+		g.root.right.left = new Node(18);
+		g.root.right.right = new Node(7);
+		
+		g.successor(g.root);
+	}
+}
