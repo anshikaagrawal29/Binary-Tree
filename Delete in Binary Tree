@@ -1,0 +1,126 @@
+using System;
+using System.Collections.Generic;
+
+public class Tree
+{
+
+  public Node root;
+  public class Node
+  {
+      public int data;
+      public Node left,right;
+      public Node(int d)
+      {
+        data = d;
+        left = right = null;
+      }
+  }
+  
+  public void insert(int d)
+  {
+      if(root == null)
+      {
+        root = new Node(d);
+        return;
+      }
+      
+      Queue<Node> q = new Queue<Node>();
+       q.Enqueue(root);
+      while(q.Count > 0)
+      {
+        Node curr = q.Dequeue();
+        
+          if(curr.left == null)
+          {
+            curr.left = new Node(d);
+            return;
+          }
+          else
+          {
+            q.Enqueue(curr.left);
+          }
+          
+          if(curr.right == null)
+          {
+            curr.right = new Node(d);
+            return;
+          }
+          else
+          {
+            q.Enqueue(curr.right);
+          }
+      }
+  }
+  
+  public void print(Node n)
+  {
+    Queue<Node> q = new Queue<Node>();
+     q.Enqueue(n);
+    while(q.Count > 0)
+    {
+      Node curr = q.Dequeue();
+        Console.Write(curr.data + " ");
+        if(curr.left != null)
+          q.Enqueue(curr.left);
+        if(curr.right != null)
+          q.Enqueue(curr.right);
+      
+    }
+  }
+  
+  public Node delete(Node n, int key)
+  {
+      if(n == null)
+        return null;
+      
+      //root condition
+      if(n.left == null && n.right == null && n.data == key)
+         return null;
+      
+      //left or right is null
+      if((n.left == null || n.right == null) && n.data == key)
+      {
+          Node temp = n.left != null? n.left : n.right;
+          return temp;
+      }
+      
+      if(n.left != null && n.right != null && n.data == key)
+      {
+          Node temp = findRightmost(root);
+          n.data = temp.data;
+         root.right =  delete(root.right, temp.data);
+      }
+      n.left = delete(n.left,key);
+      n.right = delete(n.right, key);
+      
+      return n;
+        
+  }
+  
+  public Node findRightmost(Node n)
+  {
+      Node curr = n;
+       while(curr.right != null)
+       {
+          curr = curr.right;
+       }
+      return curr;
+  }
+  
+  public static void Main()
+  {
+      Tree t = new Tree();
+      t.insert(1);
+      t.insert(2);
+      t.insert(3);
+      t.insert(4);
+      t.insert(5);
+      t.print(t.root);
+      t.delete(t.root, 5);
+      //t.delete(t.root, 2);
+	   // t.delete(t.root, 1);
+      Console.WriteLine();
+      t.print(t.root);
+      
+  }
+}
