@@ -1,0 +1,132 @@
+using System;
+using System.Collections.Generic;
+
+public class BinaryTree
+{
+    public TNode root;
+    public class TNode
+    {
+        public int data;
+        public TNode left;
+        public TNode right;
+        public TNode(int d)
+        {
+            data = d;
+            left = right = null;
+        }
+    }
+    
+    public void insert(int d)
+    {
+        TNode n = new TNode(d);
+       // Console.Write(n.data);
+        if(root == null)
+        {
+            root = n;
+            return;
+        }
+        TNode curr = null;
+        Queue<TNode> q = new Queue<TNode>();
+        q.Enqueue(root);
+        while(q.Count > 0)
+        {
+            curr = q.Dequeue();
+            
+            if(curr.left == null)
+            {
+                curr.left = n;
+                break;
+            }
+            else
+            {
+                q.Enqueue(curr.left);
+            }
+            
+            if(curr.right == null)
+            {
+                curr.right = n;
+                break;
+            }
+            else
+            {
+                q.Enqueue(curr.right);
+            }
+        }
+    }
+    
+   
+    
+    public void traverse()
+    {
+        Queue<TNode> q = new Queue<TNode>();
+        q.Enqueue(root);
+         TNode temp = null;
+         while(q.Count > 0)
+         {
+             temp = q.Dequeue();
+             Console.Write(temp.data + " ");
+             if(temp.left != null)
+             {
+                 q.Enqueue(temp.left);
+             }
+             if(temp.right != null)
+             {
+                 q.Enqueue(temp.right);
+             }
+         }
+    } 
+   //int sum1 =0;
+   int x = 4;
+   bool flag = false;
+   public void printCousins(TNode root)
+   {
+       Queue<TNode> q = new Queue<TNode>();
+       q.Enqueue(root);
+       TNode curr = null;
+        while(q.Count > 0)
+        {
+            int size = q.Count;
+            while(size > 0)
+            {
+                curr = q.Dequeue();
+                
+                if(flag)
+                Console.Write(curr.data + " ");
+                
+                if(curr.left != null)
+                q.Enqueue(curr.left);
+                
+                if(curr.right != null)
+                q.Enqueue(curr.right);
+                
+                if(curr.data == x)
+                 flag = true;
+                size--;
+            }
+            if(flag)
+            break;
+        }
+   }
+    
+    
+    public static void Main()
+    {
+        BinaryTree bt = new BinaryTree();
+        bt.root = new TNode(1);
+        bt.root.left = new TNode(2);
+        bt.root.right = new TNode(3);
+        bt.root.left.left = new TNode(4);
+        bt.root.left.right = new TNode(5);
+        bt.root.right.right = new TNode(7);
+        bt.root.right.left = new TNode(6);
+       // bt.root.right.left = new TNode(-4);
+         //bt.root.right.left.right = new TNode(9);
+         //bt.root.right.right = new TNode(7);
+        
+        //bt.traverse();
+        
+        bt.printCousins(bt.root);
+       
+       
+    }
+}
