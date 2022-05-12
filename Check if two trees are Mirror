@@ -1,0 +1,125 @@
+using System;
+using System.Collections.Generic;
+
+public class BinaryTree
+{
+    public TNode root,root1;
+    public class TNode
+    {
+        public int data;
+        public TNode left;
+        public TNode right;
+        public TNode(int d)
+        {
+            data = d;
+            left = right = null;
+        }
+    }
+    
+    public void insert(int d)
+    {
+        TNode n = new TNode(d);
+       // Console.Write(n.data);
+        if(root == null)
+        {
+            root = n;
+            return;
+        }
+        TNode curr = null;
+        Queue<TNode> q = new Queue<TNode>();
+        q.Enqueue(root);
+        while(q.Count > 0)
+        {
+            curr = q.Dequeue();
+            
+            if(curr.left == null)
+            {
+                curr.left = n;
+                break;
+            }
+            else
+            {
+                q.Enqueue(curr.left);
+            }
+            
+            if(curr.right == null)
+            {
+                curr.right = n;
+                break;
+            }
+            else
+            {
+                q.Enqueue(curr.right);
+            }
+        }
+    }
+    
+    public void traverse()
+    {
+        Queue<TNode> q = new Queue<TNode>();
+        q.Enqueue(root);
+         TNode temp = null;
+         while(q.Count > 0)
+         {
+             temp = q.Dequeue();
+             Console.Write(temp.data + " ");
+             if(temp.left != null)
+             {
+                 q.Enqueue(temp.left);
+             }
+             if(temp.right != null)
+             {
+                 q.Enqueue(temp.right);
+             }
+         }
+    } 
+    
+   
+   public bool checkTreeIdentical(TNode root, TNode root1)
+   {
+       if(root == null && root1 == null)
+       {
+           return true;
+       }
+       
+       if((root == null && root1 != null ) ||
+       (root != null && root1 == null ) )
+       {
+           return false;
+       }
+       
+       if(root != null && root1 != null
+       && root.data == root1.data)
+       {    
+           return ( checkTreeIdentical(root.left, root1.right) &&
+                    checkTreeIdentical(root.right, root1.left));
+       }
+       
+       return false;
+   }
+    
+    
+    public static void Main()
+    {
+        BinaryTree bt = new BinaryTree();
+        bt.root = new TNode(1);
+        bt.root.left = new TNode(3);
+        bt.root.right = new TNode(2);
+        
+        bt.root.right.right = new TNode(4);
+        bt.root.right.left = new TNode(5);
+       
+        bt.root1 = new TNode(1);
+        bt.root1.left = new TNode(2);
+        bt.root1.right = new TNode(3);
+        bt.root1.left.left = new TNode(4);
+        bt.root1.left.right = new TNode(5);
+        //bt.root1.right.right = new TNode(7);
+        bt.root1.right.left = new TNode(6);
+        
+       bool flag = bt.checkTreeIdentical(bt.root, bt.root1);
+       Console.Write(flag);
+       
+       
+    }
+}
