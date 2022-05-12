@@ -1,0 +1,123 @@
+using System;
+using System.Collections.Generic;
+
+public class BinaryTree
+{
+    public TNode root;
+    public class TNode
+    {
+        public int data;
+        public TNode left;
+        public TNode right;
+        public TNode(int d)
+        {
+            data = d;
+            left = right = null;
+        }
+    }
+    
+    public void insert(int d)
+    {
+        TNode n = new TNode(d);
+       // Console.Write(n.data);
+        if(root == null)
+        {
+            root = n;
+            return;
+        }
+        TNode curr = null;
+        Queue<TNode> q = new Queue<TNode>();
+        q.Enqueue(root);
+        while(q.Count > 0)
+        {
+            curr = q.Dequeue();
+            
+            if(curr.left == null)
+            {
+                curr.left = n;
+                break;
+            }
+            else
+            {
+                q.Enqueue(curr.left);
+            }
+            
+            if(curr.right == null)
+            {
+                curr.right = n;
+                break;
+            }
+            else
+            {
+                q.Enqueue(curr.right);
+            }
+        }
+    }
+    
+    int sum =0;
+    public void sumOfLeaves(TNode node)
+    {
+        if(node == null) {
+        return;
+        }
+        
+        if(node.left == null && node.right == null)
+         { sum = sum + node.data;
+         }
+         
+         sumOfLeaves(node.left);
+         sumOfLeaves(node.right);
+         
+    }
+    
+    int leftSum = 0;
+    public void sumOfLeftLeaves(TNode node, bool flag)
+    {
+        if(node == null) {
+        return;
+        }
+        
+        if(node.left == null && node.right == null && flag)
+         { leftSum = leftSum + node.data;
+         }
+         
+         sumOfLeftLeaves(node.left, true);
+         sumOfLeftLeaves(node.right, false);
+         
+    }
+    
+    public void traverse()
+    {
+        Queue<TNode> q = new Queue<TNode>();
+        q.Enqueue(root);
+         TNode temp = null;
+         while(q.Count > 0)
+         {
+             temp = q.Dequeue();
+             Console.Write(temp.data + " ");
+             if(temp.left != null)
+             {
+                 q.Enqueue(temp.left);
+             }
+             if(temp.right != null)
+             {
+                 q.Enqueue(temp.right);
+             }
+         }
+    }
+    public static void Main()
+    {
+        BinaryTree bt = new BinaryTree();
+        bt.insert(1);
+        bt.insert(2);
+        bt.insert(3);
+        bt.insert(4);
+        bt.insert(5);
+        bt.insert(6);
+        bt.traverse();
+        bt.sumOfLeaves(bt.root);
+        Console.Write("Sum is" + bt.sum);
+        bt.sumOfLeftLeaves(bt.root, false);
+        Console.Write("Sum of left leaves" + bt.leftSum);
+    }
+}
