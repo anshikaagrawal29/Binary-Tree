@@ -1,0 +1,107 @@
+using System;
+using System.Collections.Generic;
+
+public class Tree
+{
+
+  public Node root;
+  public class Node
+  {
+      public int data;
+      public Node left,right;
+      public Node(int d)
+      {
+        data = d;
+        left = right = null;
+      }
+  }
+  
+  public void insert(int d)
+  {
+      if(root == null)
+      {
+        root = new Node(d);
+        return;
+      }
+      
+      Queue<Node> q = new Queue<Node>();
+       q.Enqueue(root);
+      while(q.Count > 0)
+      {
+        Node curr = q.Dequeue();
+        
+          if(curr.left == null)
+          {
+            curr.left = new Node(d);
+            return;
+          }
+          else
+          {
+            q.Enqueue(curr.left);
+          }
+          
+          if(curr.right == null)
+          {
+            curr.right = new Node(d);
+            return;
+          }
+          else
+          {
+            q.Enqueue(curr.right);
+          }
+      }
+  }
+  
+  public void print(Node n)
+  {
+      if(n == null)
+      return;
+      
+    Queue<Node> q = new Queue<Node>();
+     q.Enqueue(n);
+    while(q.Count > 0)
+    {
+      Node curr = q.Dequeue();
+        Console.Write(curr.data + " ");
+        if(curr.left != null)
+          q.Enqueue(curr.left);
+        if(curr.right != null)
+          q.Enqueue(curr.right);
+      
+    }
+  }
+  
+  //delete full binary tree
+  public Node delete(Node root)
+  {
+      if(root == null)
+       return null;
+      
+      if(root.right == null && root.left == null)
+       return null;
+      
+      root.left = delete(root.left);
+      root.right = delete(root.right);
+      
+     if(root.right == null && root.left == null)
+        return null;
+        
+    return root;
+  }
+
+  public static void Main()
+  {
+      Tree t = new Tree();
+      t.insert(1);
+      t.insert(2);
+      t.insert(3);
+      t.insert(4);
+      t.insert(5);
+      t.insert(6);
+      t.insert(7);
+      t.print(t.root);
+      //delete root and full binary tree
+      t.root  = t.delete(t.root);
+      
+  }
+}
