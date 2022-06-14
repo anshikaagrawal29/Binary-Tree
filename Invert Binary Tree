@@ -1,0 +1,120 @@
+// Online C# Editor for free
+// Write, Edit and Run your C# code using C# Online Compiler
+    
+using System;
+using System.Collections.Generic;
+
+public class Tree
+{
+    public Node root = null;
+    public class Node
+    {
+        public int data;
+        public Node left,right;
+        public Node(int d)
+        {
+            data = d;
+            left = right = null;
+        }
+    }
+    
+    public void insert(int d)
+    {
+        if(root == null)
+        {
+            root = new Node(d);
+            
+            return;
+        }
+        
+        Queue<Node> s1 = new Queue<Node>();
+        s1.Enqueue(root);
+        Node curr = null;
+        while(s1.Count > 0)
+        {
+            curr = s1.Dequeue();
+            
+            if(curr.left == null)
+            {
+                curr.left = new Node(d);
+                return;
+            }
+            else
+            {
+                s1.Enqueue(curr.left);
+            }
+            
+            if(curr.right == null)
+            {
+                curr.right = new Node(d);
+                return;
+            }
+            else
+            {
+                s1.Enqueue(curr.right);
+            }
+        }
+    }
+    
+    public void print(Node root)
+    {
+        Queue<Node> q = new Queue<Node>();
+        Node curr = null;
+        q.Enqueue(root);
+        while(q.Count > 0)
+        {
+            curr = q.Dequeue();
+            Console.Write(curr.data + " ");
+            if(curr.left != null)
+            {
+                q.Enqueue(curr.left);
+            }
+            if(curr.right != null)
+            {
+                q.Enqueue(curr.right);
+            }
+        }
+    }
+    
+    public void swap(Node a, Node b, int level)
+    {
+        if(a == null|| b == null)
+        return;
+        
+        if(level %2 == 0)
+        {
+            int temp = a.data;
+            a.data = b.data;
+            b.data = temp;
+        }
+        
+        swap(a.left,b.right, level +1);
+        swap(a.right,b.left, level +1);
+    }
+    
+    public static void Main(string[] args)
+    {
+        Tree t = new Tree();
+        
+        t.insert(1);
+        t.insert(2);
+        t.insert(3);
+        t.insert(4);
+        t.insert(5);
+        t.insert(6);
+        t.insert(7);
+        t.insert(8);
+        t.insert(9);
+        t.insert(10);
+        t.insert(11);
+        t.insert(12);
+        t.insert(13);
+        t.insert(14);
+        t.insert(15);
+        
+        t.print(t.root);
+        t.swap(t.root.left, t.root.right,0);
+        Console.WriteLine("-----");
+        t.print(t.root);
+    }
+}
