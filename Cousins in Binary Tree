@@ -1,0 +1,82 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public bool IsCousins(TreeNode root, int x, int y) {
+
+        if(root == null)
+        return false;
+
+        if(root.left == null && root.right == null)
+            return false;
+
+        if(root.left == null || root.right == null)
+            return false;
+
+        Dictionary<TreeNode,TreeNode> d = new Dictionary<TreeNode, TreeNode>();
+        d.Add(root.left,root);
+        d.Add(root.right,root);
+
+        Queue<TreeNode> q = new Queue<TreeNode>();
+        q.Enqueue(root.left);
+        q.Enqueue(root.right);
+
+        TreeNode curr = null;
+        TreeNode parA = null;
+        TreeNode parB = null;
+        bool flag1 = false;
+        bool flag2 = false;
+        while(q.Count > 0)
+        {
+            int size = q.Count;
+            while(size > 0)
+            {
+                curr = q.Dequeue();
+                if(curr.val == x)
+                {
+                    parA = d[curr];
+                    flag1 = true;
+                }
+                   
+                if(curr.val == y)
+                {
+                    parB = d[curr];
+                    flag2 = true;
+                }
+
+                if(curr.left != null)
+                {
+                    q.Enqueue(curr.left);
+                    d.Add(curr.left, curr);
+                }
+
+                if(curr.right != null)
+                {
+                    q.Enqueue(curr.right);
+                    d.Add(curr.right, curr);
+                }
+                    
+                size--;
+            }
+            if(flag1 == true && flag2 == true)
+            {
+                if(parA != parB)
+                    return true;
+            }
+            flag1 = false;
+            flag2 = false;
+        }
+        
+        return false;
+    }
+}
