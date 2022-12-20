@@ -1,111 +1,109 @@
+// Online C# Editor for free
+// Write, Edit and Run your C# code using C# Online Compiler
+
 using System;
 using System.Collections.Generic;
 
 public class Tree
 {
-
-  public Node root;
-  public class Node
-  {
-      public int data;
-      public Node left,right;
-      public Node(int d)
-      {
-        data = d;
-        left = right = null;
-      }
-  }
-  
-  public void insert(int d)
-  {
-      if(root == null)
-      {
-        root = new Node(d);
-        return;
-      }
-      
-      Queue<Node> q = new Queue<Node>();
-       q.Enqueue(root);
-      while(q.Count > 0)
-      {
-        Node curr = q.Dequeue();
-        
-          if(curr.left == null)
-          {
-            curr.left = new Node(d);
-            return;
-          }
-          else
-          {
-            q.Enqueue(curr.left);
-          }
-          
-          if(curr.right == null)
-          {
-            curr.right = new Node(d);
-            return;
-          }
-          else
-          {
-            q.Enqueue(curr.right);
-          }
-      }
-  }
-  
-  int x = 0;
-  bool flag = false;
-  public int sum(Node curr)
-  {
-      if(curr == null)
-      return 0;
-      
-      if(curr.left == null && curr.right == null)
-      return curr.data;
-      
-      int l = sum(curr.left);
-      int r = sum(curr.right);
-      
-      //when it will come to root, l will have sum from left nodes and r will have sum of right nodes
-      if(curr.data == x)
-      {
-          if(l+r == x)
-           flag = true;
-      }
-      
-      return l+r+curr.data;
-  }
-  public void print(Node n)
-  {
-      if(n == null)
-      return;
-      
-    Queue<Node> q = new Queue<Node>();
-     q.Enqueue(n);
-    while(q.Count > 0)
+     public Node root;
+    public class Node
     {
-      Node curr = q.Dequeue();
-        Console.Write(curr.data + " ");
-        if(curr.left != null)
-          q.Enqueue(curr.left);
-        if(curr.right != null)
-          q.Enqueue(curr.right);
-      
+        public Node left,right;
+        public int data;
+        public Node(int d)
+        {
+            data = d;
+            left = right = null;
+        }
     }
-  }
-  
-
-  public static void Main()
-  {
-      Tree t = new Tree();
-      t.insert(26);
-      t.insert(10);
-      t.insert(3);
-      t.insert(4);
-      t.insert(6);
-      t.insert(3);
-      t.print(t.root);
-      t.x = t.root.data;
-      t.sum(t.root);
-      Console.Write(t.flag);
-  }
+    
+    public void insert(int d)
+    {
+        if(root == null)
+        {
+            root = new Node(d);
+            return;
+        }
+         
+        Queue<Node> q = new Queue<Node>();
+        q.Enqueue(root);
+        Node curr = null;
+        while(q.Count > 0)
+        {
+            curr = q.Dequeue();
+            if(curr.left == null)
+            {
+                curr.left = new Node(d);
+                return;
+            }
+            else
+            {
+                q.Enqueue(curr.left);
+            }
+            
+            if(curr.right == null)
+            {
+                curr.right = new Node(d);
+                return;
+            }
+            else
+            {
+                q.Enqueue(curr.right);
+            }
+            
+        }
+    }
+    
+    public void traverse()
+    {
+        Node curr = root;
+        Queue<Node> q = new Queue<Node>();
+        q.Enqueue(root);
+        while(q.Count > 0)
+        {
+            curr = q.Dequeue();
+            Console.Write(curr.data + " ");
+            if(curr.left != null)
+                q.Enqueue(curr.left);
+            if(curr.right != null)
+                q.Enqueue(curr.right);
+        }
+    }
+    
+    public int sumTree(Node curr)
+    {
+        if(curr == null)
+        return 0;
+        
+        if(curr.left == null && curr.right == null)
+            return curr.data;
+        
+        int lh = sumTree(curr.left);
+        int rh = sumTree(curr.right);
+        
+        if(curr.data != lh+rh)
+        return -1;
+        
+        return curr.data +lh +rh;
+    }
+    
+    public static void Main(string[] args)
+    {
+       
+        Tree t = new Tree();
+        t.insert(26);
+        t.insert(10);
+        t.insert(3);
+        t.insert(41);
+        t.insert(6);
+        t.insert(3);
+        t.traverse();
+        
+        int res = t.sumTree(t.root);
+        if(res == -1)
+        Console.Write("Not sum tree" + res);
+        else
+        Console.Write("Sum Tree");
+    }
 }
